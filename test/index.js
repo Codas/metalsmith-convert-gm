@@ -1,8 +1,8 @@
-var assert = require('assert'),
+var assert     = require('assert'),
     metalsmith = require('metalsmith'),
-    convert = require('..');
-    fs = require('fs'),
-    sizeOf = require('image-size');
+    convert    = require('..'),
+    fs         = require('fs'),
+    sizeOf     = require('image-size');
 
 function convert_test(options, fn) {
   // build callback can be called multiple times if an error condition occurs
@@ -12,14 +12,14 @@ function convert_test(options, fn) {
     if (once) return;
     once = true;
     fn(err, files);
-  })
+  });
 }
 
-describe('metalsmith-convert', function() {
+describe('metalsmith-convert-gm', function() {
   it('should croak on missing paramters', function(done){
     convert_test({}, function(err, files) {
       if(!err) return done(new Error("Didn't error out on missing arguments."));
-      assert.equal(err.message, 'metalsmith-convert: "src" and "target" args required', 'Correct error was thrown');
+      assert.equal(err.message, 'metalsmith-convert-gm: "src" and "target" args required', 'Correct error was thrown');
       return done();
     });
   });
@@ -31,7 +31,7 @@ describe('metalsmith-convert', function() {
       },
       {}], function(err, files) {
              if(!err) return done(new Error("Didn't error out on missing arguments."));
-             assert.equal(err.message, 'metalsmith-convert: "src" and "target" args required', 'Correct error was thrown');
+             assert.equal(err.message, 'metalsmith-convert-gm: "src" and "target" args required', 'Correct error was thrown');
              return done();
            });
   });
@@ -125,7 +125,7 @@ describe('metalsmith-convert', function() {
     convert_test(
       { src: '**/*.svg',
         target: 'png',
-        resize: { width: 320, height: 320, resizeStyle: 'aspectfit'},
+        resize: { width: 320, height: 320, resizeStyle: null},
         nameFormat: '%b_thumb%e'
     }, function(err, files){
       if (err) return done(err);
